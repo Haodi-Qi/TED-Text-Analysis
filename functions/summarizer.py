@@ -53,13 +53,13 @@ def generate_summary(input_text, input_text_tokens, input_title_tokens, topicKey
     keywords = set(input_title_tokens) | set(tfidf_dict.keys()) | set(topic_keywords_dict.keys())
     keyword_weight_dict = {}
     for keyword in keywords:
-        keyword_weight_dict[keyword] = 0
+        keyword_weight_dict[keyword] = 0.01 # base score
         if keyword in set(input_title_tokens):
-            keyword_weight_dict[keyword] +=1 
+            keyword_weight_dict[keyword] += 0.02 # score from title
         if keyword in set(tfidf_dict.keys()):
-            keyword_weight_dict[keyword] +=1 
+            keyword_weight_dict[keyword] *= tfidf_dict[keyword]
         if keyword in set(topic_keywords_dict.keys()):
-            keyword_weight_dict[keyword] +=1 
+            keyword_weight_dict[keyword] *= topic_keywords_dict[keyword]
     
     sents_score_dict = {}          
     for i, sent in enumerate(input_sents):
